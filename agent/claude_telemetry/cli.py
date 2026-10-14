@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import platform
 import shutil
 import subprocess
@@ -174,6 +175,7 @@ def setup(
         ccusage_check = subprocess.run(
             ["npx", "-y", "ccusage@19.0.3", "--version"],
             capture_output=True, text=True, timeout=120,
+            env={**os.environ, "CCUSAGE_BUN_AUTO_RUN": "0"},  # see collector._run_command
         )
         ccusage_ver = ccusage_check.stdout.strip() if ccusage_check.returncode == 0 else ""
         click.echo(f"  ccusage: {ccusage_ver or 'available via npx'}")

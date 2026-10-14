@@ -10,8 +10,8 @@
    - `agent/claude_telemetry/config.py`의 `INGEST_BASE_URL` → 새 대시보드 주소
    - `bootstrap.sh`의 `FORK_URL` → 이 저장소의 새 주소
 3. **모든 PC 재설치** — DB가 새것이라 기존 PC의 api_key는 전부 무효. 각 PC는 401이 연속 3번 나면 스스로 수집을 멈추고 LaunchAgent를 지운다(`~/.claude-telemetry/.decommissioned`).
-   - PC마다: `rm -f ~/.claude-telemetry/.decommissioned` → `bootstrap.sh` 실행 → `cc-telemetry setup`
-   - 기존 PC는 setup 전에 `mv ~/.claude-telemetry/config.json ~/.claude-telemetry/config.json.old` — setup은 config에 machine_id·api_key가 있으면 재등록하지 않고 옛 키를 그대로 쓴다(그러면 새 DB에서 401).
+   - PC마다: `mv ~/.claude-telemetry/config.json ~/.claude-telemetry/config.json.old` → `rm -f ~/.claude-telemetry/.decommissioned` → `bootstrap.sh` 실행 → `cc-telemetry setup`
+   - config를 **맨 먼저** 치울 것. setup은 config에 machine_id·api_key가 있으면 재등록하지 않고 옛 키를 그대로 쓰고, bootstrap은 데몬을 다시 띄우므로 옛 키가 남아 있으면 401이 쌓여 다시 decommission된다.
 
 ## 알아둘 것
 
