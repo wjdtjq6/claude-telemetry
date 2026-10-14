@@ -26,12 +26,16 @@ def _run_command(cmd: list[str], timeout: int = 120) -> str:
     """Run a CLI command and return stdout."""
     # On Windows, npx needs shell=True to resolve .cmd wrappers
     use_shell = sys.platform == "win32"
+    # ccusage >=19 re-execs itself under any `bun` on PATH; bun 1.3.x SIGTRAPs
+    # on macOS mid-run, failing the read at random. Pin it to Node.
+    env = {**os.environ, "CCUSAGE_BUN_AUTO_RUN": "0"}
     result = subprocess.run(
         cmd,
         capture_output=True,
         text=True,
         timeout=timeout,
         shell=use_shell,
+        env=env,
     )
     if result.returncode != 0:
         raise CollectorError(f"Command failed: {' '.join(cmd)}\n{result.stderr}")

@@ -29,6 +29,23 @@ def _load_fixture(name: str) -> str:
     return (FIXTURES / name).read_text()
 
 
+class TestRunCommand:
+    @patch("claude_telemetry.collector.subprocess.run")
+    def test_keeps_ccusage_off_bun(self, mock_run: MagicMock, monkeypatch) -> None:
+        # ccusage >=19 re-execs itself under any `bun` on PATH, and bun 1.3.x
+        # SIGTRAPs on macOS mid-run — so the daily read fails at random.
+        monkeypatch.setenv("CCUSAGE_BUN_AUTO_RUN", "1")
+        monkeypatch.setenv("HOME", "/home/test")
+        mock_run.return_value = MagicMock(returncode=0, stdout="{}", stderr="")
+
+        from claude_telemetry.collector import _run_command
+        _run_command(["npx", "-y", "ccusage@19.0.3", "claude", "daily"])
+
+        env = mock_run.call_args.kwargs["env"]
+        assert env["CCUSAGE_BUN_AUTO_RUN"] == "0"
+        assert env["HOME"] == "/home/test"
+
+
 class TestCollectDailyUsage:
     @patch("claude_telemetry.collector._run_command")
     def test_parses_daily_instances(self, mock_run: MagicMock) -> None:
