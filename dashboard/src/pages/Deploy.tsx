@@ -33,7 +33,7 @@ function getCommands(os: OS, machineName: string): CommandStep[] {
   // The rice-gang fork bakes this dashboard's ingest URL into the agent, so
   // machines must install from the fork — never the upstream PyPI package.
   const forkUrl =
-    "git+https://github.com/seosieve/claude-telemetry@main#subdirectory=agent";
+    "git+https://github.com/wjdtjq6/claude-telemetry@main#subdirectory=agent";
   const py = isWin ? "python" : "python3";
 
   const prereqCode = isMac
@@ -48,7 +48,7 @@ function getCommands(os: OS, machineName: string): CommandStep[] {
     ? {
         step: "2",
         label: "Install agent (rice-gang fork)",
-        code: "curl -fsSL https://raw.githubusercontent.com/seosieve/claude-telemetry/main/bootstrap.sh | sh",
+        code: "curl -fsSL https://raw.githubusercontent.com/wjdtjq6/claude-telemetry/main/bootstrap.sh | sh",
         warning:
           "Also registers a daily 05:10 auto-upgrade LaunchAgent. The backfill sync at the end fails before setup — that's expected; Step 4 covers it.",
       }

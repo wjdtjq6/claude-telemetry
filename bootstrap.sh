@@ -2,11 +2,11 @@
 # rice-gang cc-telemetry bootstrap.
 #
 # Usage (run once on each machine):
-#   curl -fsSL https://raw.githubusercontent.com/seosieve/claude-telemetry/main/bootstrap.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/wjdtjq6/claude-telemetry/main/bootstrap.sh | sh
 #
 # What this does:
 #   1. Replaces the upstream cc-telemetry pipx install with the rice-gang fork
-#      (git+https://github.com/seosieve/claude-telemetry@main#subdirectory=agent).
+#      (git+https://github.com/wjdtjq6/claude-telemetry@main#subdirectory=agent).
 #   2. Restarts the cc-telemetry launchd daemon so the new code takes effect.
 #   3. Installs an auto-upgrade LaunchAgent (com.cc-telemetry.auto-upgrade)
 #      that re-runs `pipx install --force` daily at 05:10 and restarts the
@@ -23,7 +23,7 @@ set -eu
 # experimental work on a branch. The --help self-check below still aborts
 # the daemon restart on a fully broken build.
 FORK_REF="main"
-FORK_URL="git+https://github.com/seosieve/claude-telemetry@${FORK_REF}#subdirectory=agent"
+FORK_URL="git+https://github.com/wjdtjq6/claude-telemetry@${FORK_REF}#subdirectory=agent"
 DAEMON_PLIST="$HOME/Library/LaunchAgents/com.cc-telemetry.plist"
 UPGRADE_PLIST="$HOME/Library/LaunchAgents/com.cc-telemetry.auto-upgrade.plist"
 UPGRADE_LABEL="com.cc-telemetry.auto-upgrade"
